@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style/estilo.css">
+    <link rel="stylesheet" href="./style/principal.css">
+    <title>Document</title>
+</head>
+<body>
+    <header>
+
+        <h1>Tienda de Comercio Electrónico</h1>
+
+        <p>Sistema de Gestión de Productos, Clientes y Compras</p>
+
+    </header>
+
+    <nav>
+
+        <ul>
+            <li><a href="tienda.html">Home</a></li>
+
+            <li><a href="productos.html">Registrar Producto</a></li>
+
+            <li><a href="verProducto.html">Ver Productos</a></li>
+
+            <li><a href="clientes.html">Registrar Cliente</a></li>
+
+            <li><a href="listarClientes.php">Ver Clientes</a></li>
+
+             <li><a href="compra.php">Registrar Compra</a></li>
+
+            <li><a href="listarCompras.php">Ver Compras</a></li>
+
+            <li><a href="productosDisponibles.php">Disponibilidad de Productos</a></li>
+
+            <li><a href="consultaAvanzada.html">Consulta Avanzada</a></li>
+
+        </ul>
+
+    </nav>
+    
+<h2>Registro de Productos</h2>
+
+<form action="guardarProducto.php"
+method="POST"
+onsubmit="return validarProducto()">
+
+<label for="nombre">Nombre</label>
+<input type="text"
+id="nombre"
+name="nombre"
+placeholder="Nombre">
+
+<label for="descripcion">Descripción</label>
+<input type="text"
+id="descripcion"
+name="descripcion"
+placeholder="Descripción">
+
+<label for="precio">Precio</label>
+<input type="number"
+step="0.01"
+id="precio"
+name="precio">
+
+<label for="stock">Stock</label>
+<input type="number"
+id="stock"
+name="stock">
+
+<input type="submit"
+value="Guardar Producto">
+
+</form>
+
+<script src="./validaProductos.js"></script>
+</body>
+</html>
