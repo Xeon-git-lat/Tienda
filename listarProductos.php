@@ -2,16 +2,38 @@
 
 include("conexion.php");
 
-// Consulta SQL
-$sql = "SELECT id_producto,
-               nombre,
-               descripcion,
-               precio,
-               stock
-        FROM producto
-        ORDER BY id_producto";
+$buscar = isset($_GET['buscar']) ? trim($_GET['buscar']) : '';
 
-$resultado = pg_query($conexion, $sql);
+if ($buscar != "") {
+
+    $sql = "SELECT id_producto,
+                   nombre,
+                   descripcion,
+                   precio,
+                   stock
+            FROM producto
+            WHERE nombre ILIKE $1
+            ORDER BY id_producto";
+
+    $resultado = pg_query_params(
+        $conexion,
+        $sql,
+        array("%".$buscar."%")
+    );
+
+} else {
+
+    $sql = "SELECT id_producto,
+                   nombre,
+                   descripcion,
+                   precio,
+                   stock
+            FROM producto
+            ORDER BY id_producto";
+
+    $resultado = pg_query($conexion, $sql);
+
+}
 
 ?>
 
@@ -25,7 +47,7 @@ $resultado = pg_query($conexion, $sql);
 <title>Listado de Productos</title>
 
 <link rel="stylesheet" href="./style/verProductos.css">
-    <link rel="stylesheet" href="./style/principal.css">
+<link rel="stylesheet" href="./style/principal.css">
 
 </head>
 
@@ -33,39 +55,57 @@ $resultado = pg_query($conexion, $sql);
 
 <header>
 
-        <h1>Tienda de Comercio Electrónico</h1>
+    <h1>Tienda de Comercio Electrónico</h1>
 
-        <p>Sistema de Gestión de Productos, Clientes y Compras</p>
+    <p>Sistema de Gestión de Productos, Clientes y Compras</p>
 
-    </header>
+</header>
 
-    <nav>
+<nav>
 
-        <ul>
+    <ul>
 
-            <li><a href="productos.html">Registrar Producto</a></li>
+        <li><a href="productos.html">Registrar Producto</a></li>
 
-            <li><a href="listarProductos.php">Ver Productos</a></li>
+        <li><a href="listarProductos.php">Ver Productos</a></li>
 
-            <li><a href="clientes.html">Registrar Cliente</a></li>
+        <li><a href="clientes.html">Registrar Cliente</a></li>
 
-            <li><a href="listarClientes.php">Ver Clientes</a></li>
+        <li><a href="listarClientes.php">Ver Clientes</a></li>
 
-            <li><a href="compra.html">Registrar Compra</a></li>
+        <li><a href="compra.html">Registrar Compra</a></li>
 
-            <li><a href="listarCompras.php">Ver Compras</a></li>
+        <li><a href="listarCompras.php">Ver Compras</a></li>
 
-            <li><a href="productosDisponibles.php">Disponibilidad de Productos</a></li>
+        <li><a href="productosDisponibles.php">Disponibilidad de Productos</a></li>
 
-            <li><a href="consultaAvanzada.html">Consulta Avanzada</a></li>
+        <li><a href="consultaAvanzada.html">Consulta Avanzada</a></li>
 
-        </ul>
+    </ul>
 
-    </nav>
+</nav>
 
 <main>
 
 <h2>Listado de Productos</h2>
+
+<form method="GET" action="">
+    <input
+        type="text"
+        name="buscar"
+        placeholder="Buscar producto..."
+        value="<?php echo isset($_GET['buscar']) ? htmlspecialchars($_GET['buscar']) : ''; ?>">
+
+    <button type="submit">Buscar</button>
+</form>
+
+<br>
+
+<?php
+if (pg_num_rows($resultado) == 0) {
+    echo "<p>No se encontraron productos.</p>";
+}
+?>
 
 <table>
 
